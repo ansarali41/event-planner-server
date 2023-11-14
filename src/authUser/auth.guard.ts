@@ -28,14 +28,13 @@ export class AuthGuard implements CanActivate {
 
       const payload = await this.jwtService.verifyAsync(jwtToken);
 
-      const user = await this.usersService.findOneUser(payload.email);
+      const user = await this.usersService.findOneById(payload.user_id);
 
-      if (!user)
-        throw new NotAcceptableException(
-          'You will need to have the necessary permissions and access levels for this action',
-        );
+      if (!user || user.id !== payload.user_id) {
+        throw new NotAcceptableException('Unauthorized User');
+      }
 
-      request['authUser'] = user;
+      request['authUser'] = payload;
     } catch (e) {
       throw new UnauthorizedException(e.message || 'Unauthorized');
     }

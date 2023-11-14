@@ -7,6 +7,8 @@ import { User } from './users/base/entity/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthUserModule } from './authUser/authUser.module';
 import { UserToken } from './authUser/base/entity/user-token.entity';
+import { EventModule } from './event/event.module';
+import { Event } from './event/base/entity/event.entity';
 
 @Module({
   imports: [
@@ -18,11 +20,12 @@ import { UserToken } from './authUser/base/entity/user-token.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, UserToken],
+      entities: [User, UserToken, Event],
       synchronize: true,
     }),
     UsersModule,
     AuthUserModule,
+    EventModule,
   ],
   controllers: [AppController],
   providers: [AppService],
