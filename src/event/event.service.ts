@@ -71,4 +71,18 @@ export class EventService {
       throw error;
     }
   }
+  async remove(id: number, userId) {
+    try {
+      await this.findOneEvent(id, userId);
+
+      return await this.eventRepository
+        .createQueryBuilder()
+        .delete()
+        .where('id = :id', { id: id })
+        .andWhere('user_id = :user_id', { user_id: userId })
+        .execute();
+    } catch (error) {
+      throw error;
+    }
+  }
 }

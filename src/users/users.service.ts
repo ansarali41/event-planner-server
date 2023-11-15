@@ -61,7 +61,7 @@ export class UsersService {
     }
   }
 
-  async updateUser(id: number, body: UpdateUserDto) {
+  async updateUser(id: number, body: User) {
     try {
       return await this.userRepository
         .createQueryBuilder()

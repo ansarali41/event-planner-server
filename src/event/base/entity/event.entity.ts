@@ -20,6 +20,18 @@ export class Event {
   @Column()
   description: string;
 
+  @Column()
+  budget: number;
+
+  @Column()
+  location: string;
+
+  @Column()
+  type: string;
+
+  @Column()
+  date: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

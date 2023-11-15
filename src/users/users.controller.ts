@@ -7,11 +7,11 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateUserDto } from './base/dto/create-user.dto';
-import { UpdateUserDto } from './base/dto/update-user.dto';
-import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AUTHORIZATION } from 'src/lib/constant';
+import { CreateUserDto } from './base/dto/create-user.dto';
+import { User } from './base/entity/user.entity';
+import { UsersService } from './users.service';
 
 @ApiTags('Users')
 @ApiBearerAuth(AUTHORIZATION)
@@ -44,12 +44,9 @@ export class UsersController {
   }
 
   @Put(':id')
-  async updateUser(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+  async updateUser(@Param('id') id: number, @Body() body: User) {
     try {
-      return await this.usersService.updateUser(+id, updateUserDto);
+      return await this.usersService.updateUser(+id, body);
     } catch (error) {
       throw error;
     }

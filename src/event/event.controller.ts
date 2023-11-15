@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -89,12 +90,20 @@ export class EventController {
     }
   }
 
-  // @Delete(':id')
-  // async remove(@Param('id') id: string) {
-  //   try {
-  //     return await this.eventService.remove(+id);
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+  @Delete(':id')
+  async remove(@Param('id') id: number, @Req() request: Request) {
+    try {
+      const userId = request['authUser'].user_id;
+      const EventRes = await this.eventService.remove(+id, userId);
+      if (EventRes.affected > 0) {
+        return { statusCode: HttpStatus.OK, message: 'Deleted successfully' };
+      }
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: 'Deleted unsuccessfully',
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
