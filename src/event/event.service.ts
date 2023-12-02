@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CreateEventDto } from './base/dto/create-event.dto';
 import { UpdateEventDto } from './base/dto/update-event.dto';
 import { Event } from './base/entity/event.entity';
@@ -44,10 +44,42 @@ export class EventService {
     }
   }
 
+  async findAllPublicEvent(body: Event, userId: number) {
+    try {
+      const [results, total] = await this.eventRepository.findAndCount({
+        where: { ...body, user_id: Not(userId) },
+        take: 10,
+        order: {
+          createdAt: 'DESC',
+        },
+      });
+
+      return {
+        results,
+        total,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findOneEvent(id: number, userId: number): Promise<Event> {
     try {
       const event = await this.eventRepository.findOne({
         where: { id, user_id: userId },
+      });
+      if (!event) throw new NotFoundException('Event not found');
+
+      return event;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findOnePublicEvent(id: number): Promise<Event> {
+    try {
+      const event = await this.eventRepository.findOne({
+        where: { id },
       });
       if (!event) throw new NotFoundException('Event not found');
 

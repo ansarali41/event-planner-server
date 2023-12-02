@@ -55,4 +55,10 @@ export class Event {
 
   @Column({ type: 'boolean', default: false })
   status: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  isPaid: boolean;
+
+  @Column({ type: 'int', nullable: true })
+  paidBy: number;
 }

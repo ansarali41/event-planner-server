@@ -41,6 +41,7 @@ export class EventController {
       throw error;
     }
   }
+
   @Post('findAll')
   async findAllEvents(@Body() body: Event, @Req() request: Request) {
     try {
@@ -60,11 +61,39 @@ export class EventController {
     }
   }
 
+  @Post('public/findAll')
+  async findAllPublicEvents(@Body() body: Event, @Req() request: Request) {
+    try {
+      const userId = request['authUser'].user_id;
+      const { results, total } = await this.eventService.findAllPublicEvent(
+        body,
+        userId,
+      );
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Success',
+        count: total,
+        data: results,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @Get(':id')
-  async findOneUser(@Param('id') id: number, @Req() request: Request) {
+  async findOneEvent(@Param('id') id: number, @Req() request: Request) {
     try {
       const userId = request['authUser'].user_id;
       return await this.eventService.findOneEvent(id, userId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get('public/:id')
+  async findOnePublicEvent(@Param('id') id: number) {
+    try {
+      return await this.eventService.findOnePublicEvent(id);
     } catch (error) {
       throw error;
     }
