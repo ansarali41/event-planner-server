@@ -47,7 +47,31 @@ export class EventService {
   async findAllPublicEvent(body: Event, userId: number) {
     try {
       const [results, total] = await this.eventRepository.findAndCount({
-        where: { ...body, user_id: Not(userId) },
+        where: {
+          ...body,
+          user_id: Not(userId),
+        },
+        take: 10,
+        order: {
+          createdAt: 'DESC',
+        },
+      });
+
+      return {
+        results,
+        total,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+  async findAllPublicEventsOther(body: Event, userId: number) {
+    try {
+      const [results, total] = await this.eventRepository.findAndCount({
+        where: {
+          ...body,
+          paidBy: Not(userId),
+        },
         take: 10,
         order: {
           createdAt: 'DESC',
@@ -103,6 +127,19 @@ export class EventService {
       throw error;
     }
   }
+  async updateEventPayment(id: number, body: Event, userId) {
+    try {
+      return await this.eventRepository
+        .createQueryBuilder()
+        .update()
+        .set({ ...body, updatedAt: new Date(), updatedBy: userId })
+        .where('id = :id', { id: id })
+        .execute();
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async remove(id: number, userId) {
     try {
       await this.findOneEvent(id, userId);

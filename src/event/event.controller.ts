@@ -80,6 +80,23 @@ export class EventController {
     }
   }
 
+  @Post('public/findAll-others')
+  async findAllPublicEventsOther(@Body() body: Event, @Req() request: Request) {
+    try {
+      const userId = request['authUser'].user_id;
+      const { results, total } =
+        await this.eventService.findAllPublicEventsOther(body, userId);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Success',
+        count: total,
+        data: results,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @Get(':id')
   async findOneEvent(@Param('id') id: number, @Req() request: Request) {
     try {
@@ -108,6 +125,30 @@ export class EventController {
     try {
       const userId = request['authUser'].user_id;
       const res = this.eventService.updateEvent(+id, updateEventDto, userId);
+      if ((await res).affected > 0) {
+        return {
+          statusCode: HttpStatus.ACCEPTED,
+          message: 'updated successfully',
+        };
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Put('payment/:id')
+  async updateUserPayment(
+    @Param('id') id: number,
+    @Body() updateEventDto: Event,
+    @Req() request: Request,
+  ) {
+    try {
+      const userId = request['authUser'].user_id;
+      const res = this.eventService.updateEventPayment(
+        +id,
+        updateEventDto,
+        userId,
+      );
       if ((await res).affected > 0) {
         return {
           statusCode: HttpStatus.ACCEPTED,

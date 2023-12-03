@@ -15,6 +15,7 @@ export class PaymentService {
     const paymentIntent = await this.stripe.paymentIntents.create({
       amount,
       currency: 'usd',
+      automatic_payment_methods: { enabled: true },
     });
 
     return paymentIntent;

@@ -19,8 +19,9 @@ export class PaymentController {
 
   @Get('/:amount')
   async createPaymentIntent(@Param('amount', ParseIntPipe) amount: number) {
-    console.log('amount', amount);
-    const paymentIntent = await this.paymentService.createPaymentIntent(amount);
+    const paymentIntent = await this.paymentService.createPaymentIntent(
+      amount * 100,
+    );
     return { clientSecret: paymentIntent.client_secret };
   }
 }

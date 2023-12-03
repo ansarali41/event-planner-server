@@ -61,4 +61,7 @@ export class Event {
 
   @Column({ type: 'int', nullable: true })
   paidBy: number;
+
+  @Column({ type: 'text', nullable: true })
+  userEmail: string;
 }
