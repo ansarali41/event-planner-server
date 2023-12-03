@@ -9,6 +9,7 @@ import { AuthUserModule } from './authUser/authUser.module';
 import { UserToken } from './authUser/base/entity/user-token.entity';
 import { EventModule } from './event/event.module';
 import { Event } from './event/base/entity/event.entity';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { Event } from './event/base/entity/event.entity';
     UsersModule,
     AuthUserModule,
     EventModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
