@@ -29,7 +29,12 @@ export class AuthUserService {
       }
       const hashed = await bcrypt.hash(createUserDto.password, 12);
 
-      await this.usersService.createUser(createUserDto.email, hashed);
+      await this.usersService.createUser(
+        createUserDto.full_name,
+        createUserDto.mobile,
+        createUserDto.email,
+        hashed,
+      );
 
       return {
         statusCode: 201,

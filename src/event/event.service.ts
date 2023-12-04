@@ -70,6 +70,7 @@ export class EventService {
       const [results, total] = await this.eventRepository.findAndCount({
         where: {
           ...body,
+          user_id: userId,
           paidBy: Not(userId),
         },
         take: 10,
