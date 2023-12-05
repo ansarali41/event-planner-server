@@ -25,4 +25,16 @@ export class CreateEventDto {
   @ApiProperty()
   @IsNotEmpty()
   location: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  venue: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  latitude: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  longitude: string;
 }

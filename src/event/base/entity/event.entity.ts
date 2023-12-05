@@ -27,6 +27,15 @@ export class Event {
   location: string;
 
   @Column()
+  venue: string;
+
+  @Column()
+  latitude: string;
+
+  @Column()
+  longitude: string;
+
+  @Column()
   type: string;
 
   @Column()
